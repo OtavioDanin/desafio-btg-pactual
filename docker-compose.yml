@@ -1,0 +1,18 @@
+version: '3'
+services:
+  desafio-btg-pactual:
+    container_name: desafio-btg-pactual
+    image: desafio-btg-pactual
+    build:
+      context: .
+    volumes:
+      - ./:/opt/www
+    ports:
+      - 9501:9501
+    environment:
+      - APP_ENV=dev
+      - SCAN_CACHEABLE=false
+
+networks:
+  default:
+    name: desafio-btg-pactual
