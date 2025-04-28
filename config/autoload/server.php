@@ -41,10 +41,14 @@ return [
         Constant::OPTION_MAX_REQUEST => 100000,
         Constant::OPTION_SOCKET_BUFFER_SIZE => 2 * 1024 * 1024,
         Constant::OPTION_BUFFER_OUTPUT_SIZE => 2 * 1024 * 1024,
+        'task_worker_num' => 8,
+        'task_enable_coroutine' => false,
     ],
     'callbacks' => [
         Event::ON_WORKER_START => [Hyperf\Framework\Bootstrap\WorkerStartCallback::class, 'onWorkerStart'],
         Event::ON_PIPE_MESSAGE => [Hyperf\Framework\Bootstrap\PipeMessageCallback::class, 'onPipeMessage'],
         Event::ON_WORKER_EXIT => [Hyperf\Framework\Bootstrap\WorkerExitCallback::class, 'onWorkerExit'],
+        Event::ON_TASK => [Hyperf\Framework\Bootstrap\TaskCallback::class, 'onTask'],
+        Event::ON_FINISH => [Hyperf\Framework\Bootstrap\FinishCallback::class, 'onFinish'],
     ],
 ];
