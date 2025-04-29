@@ -21,7 +21,7 @@ class MongoTask
     }
 
     #[Task]
-    public function insert(string $namespace, array $document): bool
+    public function save(string $namespace, array $document): bool
     {
         $writeConcern = new WriteConcern(WriteConcern::MAJORITY, 1000);
         $bulk = new BulkWrite();
@@ -32,7 +32,7 @@ class MongoTask
     }
 
     #[Task]
-    public function query(string $namespace, array $filter = [], array $options = []): array
+    public function find(string $namespace, array $filter = [], array $options = []): array
     {
         $query = new Query($filter, $options);
         return $this->manager()->executeQuery($namespace, $query)->toArray();

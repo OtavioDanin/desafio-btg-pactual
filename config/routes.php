@@ -11,13 +11,10 @@ declare(strict_types=1);
  */
 
 use Hyperf\HttpServer\Router\Router;
+use Middleware\Validator\InputOrderValidator;
 
-Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
-
-Router::get('/favicon.ico', function () {
-    return '';
-});
 
 Router::addGroup('/orders', function () {
-    Router::get('/{idOrder}/price', [\App\Controller\OrderController::class, 'getTotalPriceOrder']);
+    Router::post('/price', [\App\Controller\OrderController::class, 'getTotalPriceOrder'], ['middleware' => [InputOrderValidator::class]]);
+    Router::get('/quantity/customer/{idCustomer}', [\App\Controller\OrderController::class, 'getQuantityOrderCustomer']);
 });
