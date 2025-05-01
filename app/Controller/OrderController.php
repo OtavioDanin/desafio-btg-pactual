@@ -15,7 +15,7 @@ class OrderController extends AbstractController
     /**
      * @var OrderService
      */
-    public function __construct(private OrderService $orderService) {}
+    public function __construct(protected OrderService $orderService) {}
 
     public function getTotalPriceOrder(RequestInterface $request, ResponseInterface $response)
     {
@@ -40,7 +40,7 @@ class OrderController extends AbstractController
     public function getQuantityOrderCustomer(RequestInterface $request, ResponseInterface $response)
     {
         try{
-            $idCustomer = $request->route('idCustomer');
+            $idCustomer = $request->input('idCustomer');
             $order = $this->orderService->quantityOrderByCodeCustomer($idCustomer);
             return $response
                 ->json($order)
@@ -54,5 +54,10 @@ class OrderController extends AbstractController
                 ->json(['message' => $th->getMessage()])
                 ->withStatus(500);
         }
+    }
+
+    public function getAllOrders()
+    {
+        
     }
 }

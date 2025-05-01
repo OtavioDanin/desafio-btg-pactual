@@ -12,9 +12,10 @@ use Hyperf\HttpServer\Contract\ResponseInterface as HyperfResponseInterface;
 use Middleware\Exception\MiddlewareException;
 use Throwable;
 
-class InputOrderValidator implements MiddlewareInterface
+class InputCustomerValidator implements MiddlewareInterface
 {
     public function __construct(protected HyperfResponseInterface $response) {}
+
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -29,16 +30,16 @@ class InputOrderValidator implements MiddlewareInterface
         }
     }
 
-    private function setValidation(null|array $body): void
+    private function setValidation(null|array $body)
     {
         if (empty($body)) {
             throw new MiddlewareException('Empty body in request.');
         }
-        if (!array_key_exists('idOrder', $body)) {
-            throw new MiddlewareException('Undefide key idOrder in Body.');
+        if (!array_key_exists('idCustomer', $body)) {
+            throw new MiddlewareException('Undefide key idCustomer in Body.');
         }
-        if (!is_int($body['idOrder'])) {
-            throw new MiddlewareException('Only integer values are allowed, ' . gettype($body['idOrder']) . ' found.');
+        if (!is_int($body['idCustomer'])) {
+            throw new MiddlewareException('Only integer values are allowed, ' . gettype($body['idCustomer']) . ' found.');
         }
     }
 }

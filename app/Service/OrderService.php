@@ -16,16 +16,17 @@ class OrderService
     {
         $this->clientMongo = ApplicationContext::getContainer()->get(MongoTask::class);
     }
-    public function totalPriceTotalByCodeOrder(string $idOrder): array
+
+    public function totalPriceTotalByCodeOrder(int $idOrder): array
     {
-        $document = $this->clientMongo->find('desafio-btg-pactual.order', ['codigoPedido' => (int)$idOrder]);
+        $document = $this->clientMongo->find('desafio-btg-pactual.order', ['codigoPedido' => $idOrder]);
         if (empty($document)) {
-            throw new OrderException('Order ' . $idOrder . ' not found', 404);
+            throw new OrderException('Order not found', 404);
         }
         return $this->calculateTotalPrice($document);
     }
 
-    private function calculateTotalPrice($document)
+    private function calculateTotalPrice(array $document)
     {
         $items = 0;
         foreach ($document as $data) {
@@ -35,16 +36,16 @@ class OrderService
         foreach ($items as $item) {
             $totalPrice += $item->preco * $item->quantidade;
         }
-        return ['totalPrice' => (int)number_format($totalPrice, 2), 'items' => $items];
+        return ['totalPrice' => (int) number_format($totalPrice, 2), 'items' => $items];
     }
 
-    public function quantityOrderByCodeCustomer($idClient)
+    public function quantityOrderByCodeCustomer(int $idCustomer)
     {
-        $document = $this->clientMongo->find('desafio-btg-pactual.order', ['codigoCliente' => (int)$idClient]);
+        $document = $this->clientMongo->find('desafio-btg-pactual.order', ['codigoCliente' => $idCustomer]);
         if (empty($document)) {
-            throw new OrderException('Customer code ' . $idClient . ' not found', 404);
+            throw new OrderException('Quantity of orders not found for customer ' . $idCustomer, 404);
         }
-        return ['quantity' => count($document), 'orders' =>$this->getOrders($document)];
+        return ['quantity' => count($document), 'orders' => $this->getOrders($document)];
     }
 
     public function getOrders(array $documentOrders)
@@ -55,4 +56,7 @@ class OrderService
         }
         return $orders;
     }
+
+    // $date = new DateTimeImmutable("", new DateTimeZone('America/Sao_Paulo'));
+    // echo $date->format('Y-m-d H:i:s.v.u (P)');
 }
