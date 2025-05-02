@@ -56,8 +56,23 @@ class OrderController extends AbstractController
         }
     }
 
-    public function getAllOrders()
+    public function getAllOrdersByCustomer(RequestInterface $request, ResponseInterface $response)
     {
-        
+        try{
+            $idCustomer = $request->input('idCustomer');
+            $order = $this->orderService->allOrdersByCustomer($idCustomer);
+            return $response
+                ->json($order)
+                ->withStatus(200);
+        } catch(OrderException $orderException){
+        } catch(OrderException $orderException){
+            return $response
+                ->json(['message' => $orderException->getMessage(), 'data' => []])
+                ->withStatus($orderException->getCode());
+        } catch(Throwable $th){
+            return $response
+                ->json(['message' => $th->getMessage()])
+                ->withStatus(500);
+        }
     }
 }

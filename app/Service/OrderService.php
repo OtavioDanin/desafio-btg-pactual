@@ -41,14 +41,11 @@ class OrderService
 
     public function quantityOrderByCodeCustomer(int $idCustomer)
     {
-        $document = $this->clientMongo->find('desafio-btg-pactual.order', ['codigoCliente' => $idCustomer]);
-        if (empty($document)) {
-            throw new OrderException('Quantity of orders not found for customer ' . $idCustomer, 404);
-        }
+        $document = $this->getOrdersByCustumer($idCustomer);
         return ['quantity' => count($document), 'orders' => $this->getOrders($document)];
     }
 
-    public function getOrders(array $documentOrders)
+    private function getOrders(array $documentOrders)
     {
         $orders = [];
         foreach ($documentOrders as $document) {
@@ -57,6 +54,23 @@ class OrderService
         return $orders;
     }
 
+    public function allOrdersByCustomer(int $idCustomer)
+    {
+        return $this->getOrdersByCustumer($idCustomer);
+    }
+
+    private function getOrdersByCustumer($idCustomer): array
+    {
+        $documents = $this->clientMongo->find('desafio-btg-pactual.order', ['codigoCliente' => $idCustomer]);
+        if (empty($documents)) {
+            throw new OrderException('Orders not found for customer .' . $idCustomer, 404);
+        }
+        $docs = [];
+        foreach ($documents as $document) {
+            $docs[] = $document->codigoPedido;
+        }
+        return ['codes' => array_values($docs)];
+    }
     // $date = new DateTimeImmutable("", new DateTimeZone('America/Sao_Paulo'));
     // echo $date->format('Y-m-d H:i:s.v.u (P)');
 }

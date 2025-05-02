@@ -19,5 +19,5 @@ Router::addGroup('/orders', function () {
     
     Router::post('/price', [\App\Controller\OrderController::class, 'getTotalPriceOrder'], ['middleware' => [InputOrderValidator::class]]);
     Router::post('/quantity', [\App\Controller\OrderController::class, 'getQuantityOrderCustomer'], ['middleware' => [InputCustomerValidator::class]]);
-    Router::post('/all', [\App\Controller\OrderController::class, 'getAllOrders']);
+    Router::post('/all', [\App\Controller\OrderController::class, 'getAllOrdersByCustomer'], ['middleware' => [InputCustomerValidator::class]]);
 });
