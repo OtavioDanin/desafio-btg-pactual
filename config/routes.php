@@ -14,6 +14,7 @@ use Hyperf\HttpServer\Router\Router;
 use Middleware\Validator\InputCustomerValidator;
 use Middleware\Validator\InputOrderValidator;
 
+Router::get('/health-check', [\App\Controller\IndexController::class, 'index']);
 
 Router::addGroup('/orders', function () {
     

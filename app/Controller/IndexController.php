@@ -12,16 +12,20 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Throwable;
+
 class IndexController extends AbstractController
 {
     public function index()
     {
-        $user = $this->request->input('user', 'Hyperf');
-        $method = $this->request->getMethod();
-
-        return [
-            'method' => $method,
-            'message' => "Hello {$user}.",
-        ];
+        try {
+            return $this->response
+                ->json(['message' => 'success'])
+                ->withStatus(200);
+        } catch (Throwable $th) {
+            return $this->response
+                ->json(['message' => $th->getMessage()])
+                ->withStatus(500);
+        }
     }
 }

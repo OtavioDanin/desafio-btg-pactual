@@ -12,11 +12,12 @@ declare(strict_types=1);
 use function Hyperf\Support\env;
 
 return [
+    'enable' => true,
     'default' => [
-        'host' => env('AMQP_HOST', 'localhost'),
+        'host' => env('AMQP_HOST', 'rabbitmq'),
         'port' => (int) env('AMQP_PORT', 5672),
-        'user' => env('AMQP_USER', 'guest'),
-        'password' => env('AMQP_PASSWORD', 'guest'),
+        'user' => env('AMQP_USER', 'admin'),
+        'password' => env('AMQP_PASSWORD', 'password'),
         'vhost' => env('AMQP_VHOST', '/'),
         'concurrent' => [
             'limit' => 1,
